@@ -36,14 +36,14 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
       add(NAVIGATION_UI_USER_AGENT);
     }
   };
-  private final Context context;
+  private Context context;
   private String accessToken;
   private String userAgent;
   private EventsQueue queue;
   private TelemetryClient telemetryClient;
   private TelemetryService telemetryService;
-  private final Callback httpCallback;
-  private final SchedulerFlusher schedulerFlusher;
+  private Callback httpCallback;
+  private SchedulerFlusher schedulerFlusher;
   private Clock clock = null;
   private LocalBroadcastManager localBroadcastManager = null;
   private Intent locationServiceIntent = null;
@@ -55,12 +55,17 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
   private PermissionCheckRunnable permissionCheckRunnable = null;
 
   public MapboxTelemetry(Context context, String accessToken, String userAgent, Callback httpCallback) {
+    this.httpCallback = httpCallback;
+
+    new MapboxTelemetry(context, accessToken, userAgent);
+  }
+
+  public MapboxTelemetry(Context context, String accessToken, String userAgent) {
     if (checkRequiredParameters(accessToken, userAgent)) {
       initializeTelemetryClient();
     }
 
     this.context = context;
-    this.httpCallback = httpCallback;
     initializeQueue();
     AlarmReceiver alarmReceiver = obtainAlarmReceiver(httpCallback);
     this.schedulerFlusher = new SchedulerFlusherFactory(context, alarmReceiver).supply();
