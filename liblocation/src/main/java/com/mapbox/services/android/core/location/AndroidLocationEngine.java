@@ -80,7 +80,7 @@ class AndroidLocationEngine extends LocationEngine implements LocationListener {
   }
 
   @Override
-  public void setPriority(@LocationEnginePriority.PowerMode int priority) {
+  public void setPriority(LocationEnginePriority priority) {
     super.setPriority(priority);
     updateCurrentProvider();
   }
@@ -131,13 +131,13 @@ class AndroidLocationEngine extends LocationEngine implements LocationListener {
 
   private void updateCurrentProvider() {
     // We might want to explore android.location.Criteria here.
-    if (priority == LocationEnginePriority.NO_POWER) {
+    if (priority == LocationEnginePriority.NO_POWER.val) {
       currentProvider = LocationManager.PASSIVE_PROVIDER;
-    } else if (priority == LocationEnginePriority.LOW_POWER) {
+    } else if (priority == LocationEnginePriority.LOW_POWER.val) {
       currentProvider = LocationManager.NETWORK_PROVIDER;
-    } else if (priority == LocationEnginePriority.BALANCED_POWER_ACCURACY) {
+    } else if (priority == LocationEnginePriority.BALANCED_POWER_ACCURACY.val) {
       currentProvider = LocationManager.NETWORK_PROVIDER;
-    } else if (priority == LocationEnginePriority.HIGH_ACCURACY) {
+    } else if (priority == LocationEnginePriority.HIGH_ACCURACY.val) {
       currentProvider = LocationManager.GPS_PROVIDER;
     }
   }

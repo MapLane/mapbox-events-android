@@ -99,13 +99,13 @@ class GoogleLocationEngine extends LocationEngine implements
       request.setSmallestDisplacement(smallestDisplacement);
     }
 
-    if (priority == LocationEnginePriority.NO_POWER) {
+    if (priority == LocationEnginePriority.NO_POWER.val) {
       request.setPriority(LocationRequest.PRIORITY_NO_POWER);
-    } else if (priority == LocationEnginePriority.LOW_POWER) {
+    } else if (priority == LocationEnginePriority.LOW_POWER.val) {
       request.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-    } else if (priority == LocationEnginePriority.BALANCED_POWER_ACCURACY) {
+    } else if (priority == LocationEnginePriority.BALANCED_POWER_ACCURACY.val) {
       request.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-    } else if (priority == LocationEnginePriority.HIGH_ACCURACY) {
+    } else if (priority == LocationEnginePriority.HIGH_ACCURACY.val) {
       request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
