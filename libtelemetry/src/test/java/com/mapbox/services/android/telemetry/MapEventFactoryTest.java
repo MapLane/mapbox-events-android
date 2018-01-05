@@ -29,7 +29,7 @@ public class MapEventFactoryTest {
     initializeMapboxTelemetry();
     MapEventFactory aMapEventFactory = new MapEventFactory();
 
-    Event mapLoadEvent = aMapEventFactory.createMapLoadEvent(Event.Type.MAP_LOAD);
+    Event mapLoadEvent = aMapEventFactory.createMapLoadEvent(Event.Type.MAP_LOAD, "aUserId");
 
     assertTrue(mapLoadEvent instanceof MapLoadEvent);
   }
@@ -39,7 +39,7 @@ public class MapEventFactoryTest {
     initializeMapboxTelemetry();
     MapEventFactory aMapEventFactory = new MapEventFactory();
 
-    Event mapLoadEvent = aMapEventFactory.createMapLoadEvent(Event.Type.MAP_LOAD);
+    Event mapLoadEvent = aMapEventFactory.createMapLoadEvent(Event.Type.MAP_LOAD, "aUserId");
 
     assertEquals(Event.Type.MAP_LOAD, mapLoadEvent.obtainType());
   }
@@ -94,7 +94,7 @@ public class MapEventFactoryTest {
     MapEventFactory aMapEventFactory = new MapEventFactory();
     Event.Type notALoadMapType = Event.Type.MAP_CLICK;
 
-    aMapEventFactory.createMapLoadEvent(notALoadMapType);
+    aMapEventFactory.createMapLoadEvent(notALoadMapType, "aUserId");
   }
 
   @Test(expected = IllegalArgumentException.class)
