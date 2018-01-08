@@ -42,8 +42,8 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
   private EventsQueue queue;
   private TelemetryClient telemetryClient;
   private TelemetryService telemetryService;
-  private Callback httpCallback = null;
-  private SchedulerFlusher schedulerFlusher = null;
+  private Callback httpCallback;
+  private final SchedulerFlusher schedulerFlusher;
   private Clock clock = null;
   private LocalBroadcastManager localBroadcastManager = null;
   private Intent locationServiceIntent = null;
@@ -61,6 +61,9 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
 
     this.context = context;
     initializeQueue();
+
+    AlarmReceiver alarmReceiver = obtainAlarmReceiver();
+    this.schedulerFlusher = new SchedulerFlusherFactory(context, alarmReceiver).supply();
   }
 
   // For testing only
@@ -80,7 +83,7 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
 
   @Override
   public void onFullQueue(List<Event> fullQueue) {
-    sendEventsIfPossible(fullQueue, httpCallback);
+    sendEventsIfPossible(fullQueue);
   }
 
   @Override
@@ -110,9 +113,6 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
 
   public void setHttpCallback(Callback httpCallback) {
     this.httpCallback = httpCallback;
-
-    AlarmReceiver alarmReceiver = obtainAlarmReceiver(httpCallback);
-    this.schedulerFlusher = new SchedulerFlusherFactory(context, alarmReceiver).supply();
   }
 
   public void updateSessionIdRotationInterval(int hour) {
@@ -211,7 +211,7 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
     queue.setTelemetryInitialized(true);
   }
 
-  private AlarmReceiver obtainAlarmReceiver(final Callback httpCallback) {
+  private AlarmReceiver obtainAlarmReceiver() {
     return new AlarmReceiver(new SchedulerCallback() {
       @Override
       public void onPeriodRaised() {
@@ -220,7 +220,7 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
         List<Event> currentEvents = queue.flush();
         boolean areThereAnyEvents = currentEvents.size() > 0;
         if (areThereAnyEvents) {
-          sendEventsIfPossible(currentEvents, httpCallback);
+          sendEventsIfPossible(currentEvents);
         }
       }
 
@@ -230,9 +230,9 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
     });
   }
 
-  private void sendEventsIfPossible(List<Event> events, Callback httpCallback) {
+  private void sendEventsIfPossible(List<Event> events) {
     if (isNetworkConnected()) {
-      sendEvents(events, httpCallback);
+      sendEvents(events);
     }
   }
 
@@ -251,9 +251,13 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
     }
   }
 
-  private void sendEvents(List<Event> events, Callback httpCallback) {
+  private void sendEvents(List<Event> events) {
     if (checkRequiredParameters(accessToken, userAgent)) {
-      telemetryClient.sendEvents(events, httpCallback);
+      if (httpCallback != null) {
+        telemetryClient.setCallback(httpCallback);
+      }
+
+      telemetryClient.sendEvents(events);
     }
   }
 
@@ -262,11 +266,9 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback {
       isTelemetryEnabled = true;
       optIn();
 
-      if (schedulerFlusher != null) {
-        schedulerFlusher.register();
-        Clock clock = obtainClock();
-        schedulerFlusher.schedule(clock.giveMeTheElapsedRealtime());
-      }
+      schedulerFlusher.register();
+      Clock clock = obtainClock();
+      schedulerFlusher.schedule(clock.giveMeTheElapsedRealtime());
     }
     return isTelemetryEnabled;
   }

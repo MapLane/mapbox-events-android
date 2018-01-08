@@ -48,7 +48,7 @@ public class MapboxTelemetryTest {
 
     theMapboxTelemetry.onFullQueue(mockedList);
 
-    verify(mockedTelemetryClient, times(1)).sendEvents(eq(mockedList), eq(mockedHttpCallback));
+    verify(mockedTelemetryClient, times(1)).sendEvents(eq(mockedList));
   }
 
   @Test
@@ -72,7 +72,7 @@ public class MapboxTelemetryTest {
 
     theMapboxTelemetry.onFullQueue(mockedList);
 
-    verify(mockedTelemetryClient, never()).sendEvents(eq(mockedList), eq(mockedHttpCallback));
+    verify(mockedTelemetryClient, never()).sendEvents(eq(mockedList));
   }
 
   @Test
@@ -98,7 +98,7 @@ public class MapboxTelemetryTest {
 
     theMapboxTelemetry.onFullQueue(mockedList);
 
-    verify(mockedTelemetryClient, never()).sendEvents(eq(mockedList), eq(mockedHttpCallback));
+    verify(mockedTelemetryClient, never()).sendEvents(eq(mockedList));
   }
 
   @Test
@@ -352,7 +352,7 @@ public class MapboxTelemetryTest {
     List<Event> mockedList = mock(List.class);
 
     theMapboxTelemetry.onFullQueue(mockedList);
-    verify(mockedTelemetryClient, never()).sendEvents(eq(mockedList), eq(mockedHttpCallback));
+    verify(mockedTelemetryClient, never()).sendEvents(eq(mockedList));
   }
 
   @Test
@@ -377,7 +377,7 @@ public class MapboxTelemetryTest {
     List<Event> mockedList = mock(List.class);
 
     theMapboxTelemetry.onFullQueue(mockedList);
-    verify(mockedTelemetryClient, never()).sendEvents(eq(mockedList), eq(mockedHttpCallback));
+    verify(mockedTelemetryClient, never()).sendEvents(eq(mockedList));
   }
 
   @Test

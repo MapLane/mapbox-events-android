@@ -33,7 +33,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(mockedEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(mockedEvent);
 
     assertRequestContainsHeader("Content-Type", "application/json; charset=utf-8");
   }
@@ -45,7 +46,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(mockedEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(mockedEvent);
 
     assertRequestContainsHeader("Content-Encoding", "gzip");
   }
@@ -57,7 +59,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(mockedEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(mockedEvent);
 
     assertRequestContainsParameter("access_token", "theAccessToken");
   }
@@ -69,7 +72,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(mockedEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(mockedEvent);
 
     assertRequestContainsHeader("User-Agent", "theUserAgent");
   }
@@ -81,7 +85,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(mockedEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(mockedEvent);
 
     assertPostRequestSentTo("/events/v2");
   }
@@ -93,7 +98,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theEvent);
 
     ArrayList<Event> events = new ArrayList<>(1);
     events.add(theEvent.get(0));
@@ -107,7 +113,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockNoResponse(204);
 
-    telemetryClient.sendEvents(theEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theEvent);
 
     assertResponseBodyEquals(null);
   }
@@ -122,7 +129,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback aCallback = provideACallback(latch, bodyRef, failureRef);
     enqueueMockResponse(401, "unauthorizedRequestResponse.json");
 
-    telemetryClient.sendEvents(theEvent, aCallback);
+    telemetryClient.setCallback(aCallback);
+    telemetryClient.sendEvents(theEvent);
 
     latch.await();
     assertTelemetryResponseEquals(bodyRef.get(), "Unauthorized request, usually because of "
@@ -140,7 +148,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback aCallback = provideACallback(latch, bodyRef, failureRef);
     enqueueMockResponse(422, "invalidMessageBodyResponse.json");
 
-    telemetryClient.sendEvents(theEvent, aCallback);
+    telemetryClient.setCallback(aCallback);
+    telemetryClient.sendEvents(theEvent);
 
     latch.await();
     assertTelemetryResponseEquals(bodyRef.get(), "Invalid message body, check the types and required properties of "
@@ -170,7 +179,8 @@ public class TelemetryClientTest extends MockWebServerTest {
     Callback aCallback = provideACallback(latch, bodyRef, failureRef);
     enqueueMockNoResponse(504);
 
-    telemetryClient.sendEvents(theEvent, aCallback);
+    telemetryClient.setCallback(aCallback);
+    telemetryClient.sendEvents(theEvent);
 
     latch.await();
     assertTrue(failureRef.get());

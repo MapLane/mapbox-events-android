@@ -53,7 +53,8 @@ public class TelemetryClientMapEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theLoadEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theLoadEvent);
 
     String expectedRequestBody = obtainExpectedRequestBody(new GsonBuilder(), theLoadEvent.get(0));
     assertRequestBodyEquals(expectedRequestBody);
@@ -68,7 +69,8 @@ public class TelemetryClientMapEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theClickEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theClickEvent);
 
     String expectedRequestBody = obtainExpectedRequestBody(new GsonBuilder(), theClickEvent.get(0));
     assertRequestBodyEquals(expectedRequestBody);
@@ -83,7 +85,8 @@ public class TelemetryClientMapEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theDragendEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theDragendEvent);
 
     String expectedRequestBody = obtainExpectedRequestBody(new GsonBuilder(), theDragendEvent.get(0));
     assertRequestBodyEquals(expectedRequestBody);
@@ -100,7 +103,8 @@ public class TelemetryClientMapEventsTest extends MockWebServerTest {
     enqueueMockResponse();
     List<Event> events = obtainEvents(loadEvent, clickEvent);
 
-    telemetryClient.sendEvents(events, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(events);
 
     String expectedRequestBody = obtainExpectedRequestBody(new GsonBuilder(), events.get(0), events.get(1));
     assertRequestBodyEquals(expectedRequestBody);

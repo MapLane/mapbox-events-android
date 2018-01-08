@@ -27,6 +27,7 @@ class TelemetryClient {
   private String accessToken = null;
   private String userAgent = null;
   private TelemetryClientSettings setting;
+  private Callback callback;
   private final Logger logger;
 
   TelemetryClient(String accessToken, String userAgent, TelemetryClientSettings setting, Logger logger) {
@@ -40,17 +41,21 @@ class TelemetryClient {
     this.userAgent = userAgent;
   }
 
-  void sendEvents(List<Event> events, Callback callback) {
+  void sendEvents(List<Event> events) {
     ArrayList<Event> batch = new ArrayList<>();
     batch.addAll(events);
-    sendBatch(batch, callback);
+    sendBatch(batch);
   }
 
   void updateDebugLoggingEnabled(boolean debugLoggingEnabled) {
     setting = setting.toBuilder().debugLoggingEnabled(debugLoggingEnabled).build();
   }
 
-  private void sendBatch(List<Event> batch, Callback callback) {
+  void setCallback(Callback callback) {
+    this.callback = callback;
+  }
+
+  private void sendBatch(List<Event> batch) {
     GsonBuilder gsonBuilder = configureGsonBuilder();
     Gson gson = gsonBuilder.create();
     String payload = gson.toJson(batch);
@@ -71,7 +76,10 @@ class TelemetryClient {
       .build();
 
     OkHttpClient client = setting.getClient();
-    client.newCall(request).enqueue(callback);
+
+    if (callback != null) {
+      client.newCall(request).enqueue(callback);
+    }
   }
 
   private boolean isExtraDebuggingNeeded() {

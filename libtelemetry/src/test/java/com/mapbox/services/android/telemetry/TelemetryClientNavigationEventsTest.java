@@ -110,7 +110,8 @@ public class TelemetryClientNavigationEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theAppUserTurnstile, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theAppUserTurnstile);
 
     String expectedRequestBody = obtainExpectedRequestBody(new GsonBuilder(), theAppUserTurnstile.get(0));
     assertRequestBodyEquals(expectedRequestBody);
@@ -125,7 +126,8 @@ public class TelemetryClientNavigationEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theArriveEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theArriveEvent);
 
     GsonBuilder gsonBuilder = configureTypeAdapter(arrive, new GsonBuilder());
     String expectedRequestBody = obtainExpectedRequestBody(gsonBuilder, theArriveEvent.get(0));
@@ -141,7 +143,8 @@ public class TelemetryClientNavigationEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theDepartEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theDepartEvent);
 
     GsonBuilder gsonBuilder = configureTypeAdapter(depart, new GsonBuilder());
     String expectedRequestBody = obtainExpectedRequestBody(gsonBuilder, theDepartEvent.get(0));
@@ -157,7 +160,8 @@ public class TelemetryClientNavigationEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theCancelEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theCancelEvent);
 
     GsonBuilder gsonBuilder = configureTypeAdapter(cancel, new GsonBuilder());
     String expectedRequestBody = obtainExpectedRequestBody(gsonBuilder, theCancelEvent.get(0));
@@ -173,7 +177,8 @@ public class TelemetryClientNavigationEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theFeedbackEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theFeedbackEvent);
 
     GsonBuilder gsonBuilder = configureTypeAdapter(feedback, new GsonBuilder());
     String expectedRequestBody = obtainExpectedRequestBody(gsonBuilder, theFeedbackEvent.get(0));
@@ -189,7 +194,8 @@ public class TelemetryClientNavigationEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theRerouteEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theRerouteEvent);
 
     GsonBuilder gsonBuilder = configureTypeAdapter(reroute, new GsonBuilder());
     String expectedRequestBody = obtainExpectedRequestBody(gsonBuilder, theRerouteEvent.get(0));
@@ -205,7 +211,8 @@ public class TelemetryClientNavigationEventsTest extends MockWebServerTest {
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
 
-    telemetryClient.sendEvents(theFasterRouteEvent, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(theFasterRouteEvent);
 
     GsonBuilder gsonBuilder = configureTypeAdapter(fasterRoute, new GsonBuilder());
     String expectedRequestBody = obtainExpectedRequestBody(gsonBuilder, theFasterRouteEvent.get(0));
@@ -223,7 +230,8 @@ public class TelemetryClientNavigationEventsTest extends MockWebServerTest {
     enqueueMockResponse();
     List<Event> events = obtainEvents(rerouteEvent, fasterRouteEvent);
 
-    telemetryClient.sendEvents(events, mockedCallback);
+    telemetryClient.setCallback(mockedCallback);
+    telemetryClient.sendEvents(events);
 
     GsonBuilder gsonBuilder = configureTypeAdapter(reroute, new GsonBuilder());
     gsonBuilder = configureTypeAdapter(fasterRoute, gsonBuilder);
