@@ -23,6 +23,8 @@ public class AppUserTurnstileTest {
 
   private Event obtainAnAppUserTurnstileEvent() {
     boolean indifferentTelemetryEnabled = false;
-    return new AppUserTurnstile(indifferentTelemetryEnabled, "anySdkIdentifier", "anySdkVersion");
+    String userId = TelemetryUtils.obtainUniversalUniqueIdentifier();
+    return new AppUserTurnstile(indifferentTelemetryEnabled, "anySdkIdentifier", "anySdkVersion",
+      userId);
   }
 }

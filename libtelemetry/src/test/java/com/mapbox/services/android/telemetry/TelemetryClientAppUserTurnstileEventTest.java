@@ -17,7 +17,9 @@ public class TelemetryClientAppUserTurnstileEventTest extends MockWebServerTest 
   public void sendsTheCorrectBodyPostingAppUserTurnstileEvent() throws Exception {
     TelemetryClient telemetryClient = obtainATelemetryClient("anyAccessToken", "anyUserAgent");
     boolean indifferentTelemetryEnabled = false;
-    Event anAppUserTurnstile = new AppUserTurnstile(indifferentTelemetryEnabled, "anySdkIdentifier", "anySdkVersion");
+    String userId = TelemetryUtils.obtainUniversalUniqueIdentifier();
+    Event anAppUserTurnstile = new AppUserTurnstile(indifferentTelemetryEnabled, "anySdkIdentifier",
+      "anySdkVersion", userId);
     List<Event> theAppUserTurnstile = obtainEvents(anAppUserTurnstile);
     Callback mockedCallback = mock(Callback.class);
     enqueueMockResponse();
