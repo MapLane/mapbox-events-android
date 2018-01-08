@@ -28,8 +28,9 @@ public class MapEventFactoryTest {
   public void checksMapLoadEvent() throws Exception {
     initializeMapboxTelemetry();
     MapEventFactory aMapEventFactory = new MapEventFactory();
+    String validUserId = "validUserId";
 
-    Event mapLoadEvent = aMapEventFactory.createMapLoadEvent(Event.Type.MAP_LOAD, "aUserId");
+    Event mapLoadEvent = aMapEventFactory.createMapLoadEvent(Event.Type.MAP_LOAD, validUserId);
 
     assertTrue(mapLoadEvent instanceof MapLoadEvent);
   }
@@ -38,8 +39,9 @@ public class MapEventFactoryTest {
   public void checksLoadType() throws Exception {
     initializeMapboxTelemetry();
     MapEventFactory aMapEventFactory = new MapEventFactory();
+    String validUserId = "validUserId";
 
-    Event mapLoadEvent = aMapEventFactory.createMapLoadEvent(Event.Type.MAP_LOAD, "aUserId");
+    Event mapLoadEvent = aMapEventFactory.createMapLoadEvent(Event.Type.MAP_LOAD, validUserId);
 
     assertEquals(Event.Type.MAP_LOAD, mapLoadEvent.obtainType());
   }
@@ -93,8 +95,29 @@ public class MapEventFactoryTest {
     initializeMapboxTelemetry();
     MapEventFactory aMapEventFactory = new MapEventFactory();
     Event.Type notALoadMapType = Event.Type.MAP_CLICK;
+    String validUserId = "validUserId";
 
-    aMapEventFactory.createMapLoadEvent(notALoadMapType, "aUserId");
+    aMapEventFactory.createMapLoadEvent(notALoadMapType, validUserId);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void checksLoadEmptyUserId() throws Exception {
+    initializeMapboxTelemetry();
+    MapEventFactory aMapEventFactory = new MapEventFactory();
+    Event.Type notALoadMapType = Event.Type.MAP_CLICK;
+    String emptyUserId = "";
+
+    aMapEventFactory.createMapLoadEvent(notALoadMapType, emptyUserId);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void checksLoadNullUserId() throws Exception {
+    initializeMapboxTelemetry();
+    MapEventFactory aMapEventFactory = new MapEventFactory();
+    Event.Type notALoadMapType = Event.Type.MAP_CLICK;
+    String nullUserId = null;
+
+    aMapEventFactory.createMapLoadEvent(notALoadMapType, nullUserId);
   }
 
   @Test(expected = IllegalArgumentException.class)

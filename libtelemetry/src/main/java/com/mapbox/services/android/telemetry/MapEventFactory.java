@@ -236,7 +236,7 @@ public class MapEventFactory {
   }
 
   private void checkUserId(String userId) {
-    if (userId == null && userId.isEmpty()) {
+    if (TelemetryUtils.isEmpty(userId)) {
       throw new IllegalArgumentException(USER_ID_NULL_EMPTY);
     }
   }
